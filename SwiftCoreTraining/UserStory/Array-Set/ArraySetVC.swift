@@ -67,5 +67,37 @@ final class ArraySetVC: BaseViewController {
         print("Time elapsed for appendArrayToSet: \(timeElapsed) s.")
     }
     
- 
 }
+
+#if DEBUG
+#if targetEnvironment(simulator)
+import SwiftUI
+
+@available(iOS 13.0, *)
+struct ArraySetVC_Previews: PreviewProvider {
+    
+    static var devices = AppConstants.previewDevices
+    
+    static var platform: PreviewPlatform? {
+        return SwiftUI.PreviewPlatform.iOS
+    }
+    
+    static var previews: some SwiftUI.View {
+        
+        ForEach(devices, id: \.self) { deviceName in
+            Group {
+                
+                UIViewControllerPreview {
+                    let vc = ArraySetVC()
+                    let navVC = UINavigationController(rootViewController: vc)
+                    return navVC
+                }
+                
+            }.previewDevice(PreviewDevice(rawValue: deviceName))
+            .previewDisplayName(deviceName)
+        }
+        
+    }
+}
+#endif
+#endif

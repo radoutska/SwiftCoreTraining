@@ -34,17 +34,16 @@ final class CustomTransitionsVC: BaseViewController {
         contentView.imageView.addGestureRecognizer(tap)
     }
     
-    @objc func didTapImage() {
+    @objc
+    private func didTapImage() {
         let vc = TransitionPushVC()
         navigationController?.pushViewController(vc, animated: true)
     }
-    
     
 }
 
 // MARK: - UINavigationControllerDelegate
 extension CustomTransitionsVC: UINavigationControllerDelegate {
-    
     
     func navigationController(_ navigationController: UINavigationController,
                               animationControllerFor operation: UINavigationController.Operation,
@@ -84,3 +83,36 @@ extension CustomTransitionsVC: UINavigationControllerDelegate {
         
     }
 }
+
+#if DEBUG
+#if targetEnvironment(simulator)
+import SwiftUI
+
+@available(iOS 13.0, *)
+struct CustomTransitionsVC_Previews: PreviewProvider {
+    
+    static var devices = AppConstants.previewDevices
+    
+    static var platform: PreviewPlatform? {
+        return SwiftUI.PreviewPlatform.iOS
+    }
+    
+    static var previews: some SwiftUI.View {
+        
+        ForEach(devices, id: \.self) { deviceName in
+            Group {
+                
+                UIViewControllerPreview {
+                    let vc = CustomTransitionsVC()
+                    let navVC = UINavigationController(rootViewController: vc)
+                    return navVC
+                }
+                
+            }.previewDevice(PreviewDevice(rawValue: deviceName))
+            .previewDisplayName(deviceName)
+        }
+        
+    }
+}
+#endif
+#endif

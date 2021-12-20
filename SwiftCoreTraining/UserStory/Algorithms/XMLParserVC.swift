@@ -22,7 +22,6 @@ final class XMLParserVC: BaseViewController {
 //        debugPrint(parseResult)
     }
     
-    
 }
 
 extension XMLParserVC: XMLParserDelegate {
@@ -46,7 +45,7 @@ extension XMLParserVC: XMLParserDelegate {
     }
     
     // MARK: Delegate methods
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String] = [:]) {
         debugPrint("Did start element: \(elementName)")
         debugPrint(String(describing: namespaceURI))
         debugPrint(String(describing: qName))
@@ -78,3 +77,36 @@ extension XMLParserVC: XMLParserDelegate {
     }
     
 }
+
+#if DEBUG
+#if targetEnvironment(simulator)
+import SwiftUI
+
+@available(iOS 13.0, *)
+struct XMLParserVC_Previews: PreviewProvider {
+    
+    static var devices = AppConstants.previewDevices
+    
+    static var platform: PreviewPlatform? {
+        return SwiftUI.PreviewPlatform.iOS
+    }
+    
+    static var previews: some SwiftUI.View {
+        
+        ForEach(devices, id: \.self) { deviceName in
+            Group {
+                
+                UIViewControllerPreview {
+                    let vc = XMLParserVC()
+                    let navVC = UINavigationController(rootViewController: vc)
+                    return navVC
+                }
+                
+            }.previewDevice(PreviewDevice(rawValue: deviceName))
+            .previewDisplayName(deviceName)
+        }
+        
+    }
+}
+#endif
+#endif
